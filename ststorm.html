@@ -6,17 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Severe T-Storm Warnings</title>
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
+      height: 100%;
+      width: 100%;
       font-family: Arial, sans-serif;
+      background-color: #ffff66; /* yellow */
+      color: black;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #ffff66; /* yellow */
-      color: black;
-      width: 100%;
-      height: 100%;
       font-size: 2em;
       font-weight: bold;
       border-radius: 15px;
@@ -47,7 +47,7 @@
     }
 
     fetchSevereCount();
-    setInterval(fetchSevereCount, 60000); // Refresh every 60 seconds
+    setInterval(fetchSevereCount, 60000);
   </script>
 </body>
 </html>
