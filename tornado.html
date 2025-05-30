@@ -6,17 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tornado Warnings</title>
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
+      height: 100%;
+      width: 100%;
       font-family: Arial, sans-serif;
+      background-color: #ff4c4c; /* red */
+      color: white;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #ff4c4c; /* red */
-      color: white;
-      width: 100%;
-      height: 100%;
       font-size: 2em;
       font-weight: bold;
       border-radius: 15px;
@@ -47,7 +47,7 @@
     }
 
     fetchTornadoCount();
-    setInterval(fetchTornadoCount, 60000); // Refresh every 60 seconds
+    setInterval(fetchTornadoCount, 60000);
   </script>
 </body>
 </html>
