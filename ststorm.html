@@ -24,7 +24,7 @@
   </style>
 </head>
 <body>
-  <div id="severe">Severe T-Storm: ...</div>
+  <div id="severe">S. T-Storm: ...</div>
 
   <script>
     async function fetchSevereCount() {
@@ -39,9 +39,9 @@
           }
         });
 
-        document.getElementById("severe").textContent = `Severe T-Storm: ${count}`;
+        document.getElementById("severe").textContent = `S. T-Storm: ${count}`;
       } catch (err) {
-        document.getElementById("severe").textContent = "Severe T-Storm: Error";
+        document.getElementById("severe").textContent = "S. T-Storm: Error";
         console.error(err);
       }
     }
