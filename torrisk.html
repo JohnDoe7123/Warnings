@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tornado Risk Today</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      color: black;
+      text-align: center;
+      box-sizing: border-box;
+      border: 4px solid black;
+      transition: background-color 0.5s ease;
+    }
+    #risk {
+      font-size: 2em;
+      padding: 10px 20px;
+      max-width: 90vw;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div id="risk">Loading tornado risk...</div>
+
+  <script>
+    // Map SPC categorical risk to background color & text
+    const riskColors = {
+      'HIGH': '#800080',       // purple
+      'MODERATE': '#FF0000',   // red
+      'ENHANCED': '#FFA500',   // orange
+      'SLIGHT': '#FFFF00',     // yellow
+      'MARGINAL': '#006400',   // dark green
+      'MINIMAL': '#A9A9A9',    // gray, fallback
+      'NONE': '#A9A9A9',       // no risk
+    };
+
+    async function fetchTornadoRisk() {
+      try {
+        // Fetch Day 1 Convective Outlook GeoJSON from SPC
+        const response = await fetch("https://api.weather.gov/products/types/convective-day1");
+        const data = await response.json();
+
+        // Find latest "Convective Outlook" product with Tornado risk info
+        const products = data.products || [];
+        let latestProductId = null;
+
+        // We'll pick the latest one with "Tornado" or "Severe" in the title
+        for (const product of products) {
+          if (product.productCode.includes("OUTLOOK") || product.productCode.includes("CONVECTIVE")) {
+            latestProductId = product.productId;
+            break;
+          }
+        }
+
+        // If none found, fallback
+        if (!latestProductId) {
+          document.getElementById("risk").textContent = "Tornado Risk Data Not Available";
+          return;
+        }
+
+        // Fetch the actual product text
+        const productResponse = await fetch(`https://api.weather.gov/products/${latestProductId}`);
+        const productData = await productResponse.json();
+
+        const productText = productData.productText || "";
+
+        // Parse tornado risk from product text (simple approach)
+        // We'll search for "TORNADO" lines and associated risk category
+        const riskLevels = ['HIGH', 'MODERATE', 'ENHANCED', 'SLIGHT', 'MARGINAL', 'NONE'];
+        let foundRisk = 'NONE';
+
+        for (const level of riskLevels) {
+          const regex = new RegExp(`TORNADO.*${level}`, "i");
+          if (regex.test(productText)) {
+            foundRisk = level;
+            break;
+          }
+        }
+
+        // Set text and background color
+        const riskName = foundRisk.charAt(0) + foundRisk.slice(1).toLowerCase();
+        const bgColor = riskColors[foundRisk] || '#A9A9A9';
+
+        document.body.style.backgroundColor = bgColor;
+        const riskDiv = document.getElementById("risk");
+        riskDiv.style.color = (foundRisk === 'SLIGHT' || foundRisk === 'ENHANCED' || foundRisk === 'MODERATE' || foundRisk === 'HIGH') ? 'black' : 'white';
+        riskDiv.textContent = `Today's Tornado Risk: ${riskName}`;
+      } catch (e) {
+        console.error(e);
+        document.getElementById("risk").textContent = "Error fetching tornado risk";
+        document.body.style.backgroundColor = '#A9A9A9';
+      }
+    }
+
+    fetchTornadoRisk();
+    // Refresh every hour
+    setInterval(fetchTornadoRisk, 3600000);
+  </script>
+</body>
+</html>
