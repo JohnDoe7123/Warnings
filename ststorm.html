@@ -1,25 +1,33 @@
-<!-- severe-tstorm.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Severe T-Storm Warnings</title>
+  <meta charset="UTF-8">
+  <title>Severe T-Storm</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       width: 100%;
-      font-family: Arial, sans-serif;
-      background-color: rgb(255, 225, 0); /* vivid yellow */
-      color: black;
+      background-color: rgb(255, 225, 0);
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 2em;
+    }
+
+    #severe {
+      font-family: Arial, sans-serif;
+      color: black;
       font-weight: bold;
-      border-radius: 15px;
+      font-size: 5vw;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-shadow:
+        -1px -1px 0 #000,
+         1px -1px 0 #000,
+        -1px  1px 0 #000,
+         1px  1px 0 #000;
     }
   </style>
 </head>
@@ -47,8 +55,7 @@
     }
 
     fetchSevereCount();
-    setInterval(fetchSevereCount, 60000); // refresh every minute
+    setInterval(fetchSevereCount, 60000);
   </script>
 </body>
 </html>
-
